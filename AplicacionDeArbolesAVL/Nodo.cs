@@ -1,20 +1,25 @@
+using System;
+
 namespace AplicacionDeArbolesAVL
 {
     public class Nodo
     {
-        private Simbolo simbolo;
+        private Simbolo simb;
         private Nodo nodoIzquierdo;
         private Nodo nodoDerecho;
         private int altura;
 
         public Nodo()
         {
+            simb = null;
+            nodoIzquierdo = null;
+            nodoDerecho = null;
         }
 
-        public Simbolo Simbolo
+        public Simbolo Simb
         {
-            get => simbolo;
-            set => simbolo = value;
+            get => simb;
+            set => simb = value;
         }
 
         public Nodo NodoIzquierdo
@@ -33,6 +38,11 @@ namespace AplicacionDeArbolesAVL
         {
             get => altura;
             set => altura = value;
+        }
+
+        public void MostrarNodo()
+        {
+            Console.Write(simb.ToString()+" ");
         }
     }
 }
