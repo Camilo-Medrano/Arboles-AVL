@@ -12,46 +12,46 @@ namespace AplicacionDeArbolesAVL
         }
 
         /// <summary>
-        /// Insertar nuevo simbolo
+        /// Método Insertar
         /// </summary>
-        /// <param name="s"></param>
-        public void Insertar(Simbolo s)
+        /// <param name="s">Simbolo a insertar</param>
+        /// <param name="n">nodo actual</param>
+        /// <returns>Nodo en el cual fue insertado</returns>
+        public Nodo Insertar(Simbolo s, Nodo n)
         {
-            Nodo nuevoNodo = new Nodo();
-            nuevoNodo.Simb = s;
-            if (raiz == null)
-                raiz = nuevoNodo;
-            else
+            if (n == null)
             {
-                Nodo actual = raiz;
-                Nodo padre;
-                while (true)
+                n = new Nodo(s, null, null);
+            }
+            else if (string.CompareOrdinal(s.Nombre,n.Simb.Nombre) < 0) {
+                n.NodoIzquierdo = Insertar(s, n.NodoIzquierdo);
+                if ((n.NodoIzquierdo.Altura - n.NodoDerecho.Altura) == 2)
+                    n = RotarConNodoIzquierdoHijo(n);
+                else
+                    n = DobleConNodoIzquierdoHijo(n);
+            }
+            else if (string.CompareOrdinal(s.Nombre,n.Simb.Nombre) > 0)
+            {
+                n.NodoDerecho = Insertar(s, n.NodoDerecho);
+                if ((n.NodoDerecho.Altura - n.NodoIzquierdo.Altura) == 2)
                 {
-                    padre = actual;
-                    if (String.CompareOrdinal(s.Nombre, actual.Simb.Nombre)<0)
-                    {
-                        actual = actual.NodoIzquierdo;
-                        if (actual == null)
-                        {
-                            padre.NodoIzquierdo = nuevoNodo;
-                            break;
-                        }
-                        
-                    }
-                    else 
-                    {
-                        actual = actual.NodoDerecho; 
-                        if (actual == null) 
-                        {
-                            padre.NodoDerecho = nuevoNodo; 
-                            break;
-                        }
-                    }
+                    if (string.CompareOrdinal(s.Nombre, n.NodoDerecho.Simb.Nombre) > 0)
+                        n = RotarConNodoDerechoHijo(n);
+                    else
+                        n = DobleConNodoDerechoHijo(n);
                 }
             }
+            
+            n.Altura = Math.Max(n.NodoIzquierdo.Altura, n.NodoDerecho.Altura) + 1; 
+            return n;
         }
         
+        //METODOS PARA MOSTRAR LOS DATOS
         
+        /// <summary>
+        /// Método que lo muestra en orden
+        /// </summary>
+        /// <param name="laRaiz">nodo a mostrar</param>
         public void EnOrden(Nodo laRaiz) 
         {
             if (laRaiz != null) 
@@ -62,6 +62,10 @@ namespace AplicacionDeArbolesAVL
             }
         }
         
+        /// <summary>
+        /// Método que lo muestra en pre-orden 
+        /// </summary>
+        /// <param name="laRaiz">nodo a mostrar</param>
         public void PreOrden(Nodo laRaiz) {
             if (!(laRaiz == null)) {
                 laRaiz.MostrarNodo();
@@ -70,6 +74,10 @@ namespace AplicacionDeArbolesAVL
             }
         }
         
+        /// <summary>
+        /// Metodo que lo muestra en post-orden
+        /// </summary>
+        /// <param name="laRaiz">nodo a mostrar</param>
         public void PostOrden(Nodo laRaiz) {
             if (!(laRaiz == null)) {
                 PostOrden(laRaiz.NodoIzquierdo);
@@ -78,20 +86,35 @@ namespace AplicacionDeArbolesAVL
             }
         }
         
-        public string EncontrarMin() {
+        //METODOS DE BUSQUEDA
+        
+        /// <summary>
+        /// Método que encuentra el mínimo
+        /// </summary>
+        /// <returns>nodo con el nombre "menor"</returns>
+        public Nodo EncontrarMin() {
             Nodo actual = raiz; 
             while (!(actual.NodoIzquierdo == null)) 
                 actual = actual.NodoIzquierdo; 
-            return actual.Simb.Nombre;
+            return actual;
         }
         
-        public string EncontrarMax() {
+        /// <summary>
+        /// Método que encuentra el máximo
+        /// </summary>
+        /// <returns>nodo con el nombre "mayor"</returns>
+        public Nodo EncontrarMax() {
             Nodo actual = raiz;
             while (!(actual.NodoDerecho == null))
                 actual = actual.NodoDerecho;
-            return actual.Simb.Nombre;
+            return actual;
         }
         
+        /// <summary>
+        /// Método que busca a partir de un nombre dado
+        /// </summary>
+        /// <param name="llave">nombre a buscar</param>
+        /// <returns>null si no se encontro</returns>
         public Nodo Encontrar(string llave) {
             Nodo actual = raiz;
             while (!actual.Simb.Nombre.Equals(llave)) {
@@ -105,6 +128,11 @@ namespace AplicacionDeArbolesAVL
             return actual;
         }
         
+        /// <summary>
+        /// Borra un nodo del arbol
+        /// </summary>
+        /// <param name="llave">nombre del simbolo del nodo a borrar</param>
+        /// <returns>false si no se borro</returns>
         public bool Borrar(string llave)
         {
             Nodo actual = raiz;
@@ -169,6 +197,11 @@ namespace AplicacionDeArbolesAVL
             return true;
         }
         
+        /// <summary>
+        /// Método para encontrar el heredero de un nodo a borrar
+        /// </summary>
+        /// <param name="borrarNodo">nodo a borrar</param>
+        /// <returns>nodo heredero</returns>
         public Nodo GetHeredero(Nodo borrarNodo) {
             Nodo herederoPadre = borrarNodo;
             Nodo heredero = borrarNodo;
