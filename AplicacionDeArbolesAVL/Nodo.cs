@@ -14,6 +14,7 @@ namespace AplicacionDeArbolesAVL
             simb = null;
             nodoIzquierdo = null;
             nodoDerecho = null;
+            altura = 0;
         }
 
         public Nodo(Simbolo simb, Nodo nodoIzquierdo, Nodo nodoDerecho)
@@ -49,7 +50,7 @@ namespace AplicacionDeArbolesAVL
 
         public void MostrarNodo()
         {
-            Console.Write(simb.ToString()+" ");
+            Console.Write("\n"+simb.ToString()+" ");
         }
     }
 }
