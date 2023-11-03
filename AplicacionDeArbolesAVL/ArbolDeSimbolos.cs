@@ -6,44 +6,98 @@ namespace AplicacionDeArbolesAVL
     {
         private Nodo raiz;
 
+        public Nodo Raiz
+        {
+            get => raiz;
+            set => raiz = value;
+        }
+
         public ArbolDeSimbolos()
         {
             raiz = null;
         }
+        
+        int Altura(Nodo N) {
+            if (N == null)
+                return 0;
+            return N.Altura;
+        }
+        
+        int max(int a, int b) {
+            return (a > b) ? a : b;
+        }
+
+        //METODOS DE BALANCEO
+        
+        Nodo rotarDerecha(Nodo y) {
+            Nodo x = y.NodoIzquierdo;
+            Nodo T2 = x.NodoDerecho;
+            x.NodoDerecho = y;
+            y.NodoIzquierdo = T2;
+            y.Altura = max(Altura(y.NodoIzquierdo), Altura(y.NodoDerecho)) + 1;
+            x.Altura = max(Altura(x.NodoIzquierdo), Altura(x.NodoDerecho)) + 1;
+            return x;
+        }
+
+        Nodo rotarIzquierda(Nodo x) {
+            Nodo y = x.NodoDerecho;
+            Nodo T2 = y.NodoIzquierdo;
+            y.NodoIzquierdo = x;
+            x.NodoDerecho = T2;
+            x.Altura = max(Altura(x.NodoIzquierdo), Altura(x.NodoDerecho)) + 1;
+            y.Altura = max(Altura(y.NodoIzquierdo), Altura(y.NodoDerecho)) + 1;
+            return y;
+        }
 
         /// <summary>
-        /// Método Insertar
+        /// Obtener el factor de balanceo de un nodo
         /// </summary>
-        /// <param name="s">Simbolo a insertar</param>
-        /// <param name="n">nodo actual</param>
-        /// <returns>Nodo en el cual fue insertado</returns>
-        public Nodo Insertar(Simbolo s, Nodo n)
-        {
-            if (n == null)
-            {
-                n = new Nodo(s, null, null);
-            }
-            else if (string.CompareOrdinal(s.Nombre,n.Simb.Nombre) < 0) {
-                n.NodoIzquierdo = Insertar(s, n.NodoIzquierdo);
-                if ((n.NodoIzquierdo.Altura - n.NodoDerecho.Altura) == 2)
-                    n = RotarConNodoIzquierdoHijo(n);
-                else
-                    n = DobleConNodoIzquierdoHijo(n);
-            }
-            else if (string.CompareOrdinal(s.Nombre,n.Simb.Nombre) > 0)
-            {
-                n.NodoDerecho = Insertar(s, n.NodoDerecho);
-                if ((n.NodoDerecho.Altura - n.NodoIzquierdo.Altura) == 2)
-                {
-                    if (string.CompareOrdinal(s.Nombre, n.NodoDerecho.Simb.Nombre) > 0)
-                        n = RotarConNodoDerechoHijo(n);
-                    else
-                        n = DobleConNodoDerechoHijo(n);
+        /// <param name="N"></param>
+        /// <returns></returns>
+        int getFactorBalanceo(Nodo N) {
+            if (N == null)
+                return 0;
+            return Altura(N.NodoIzquierdo) - Altura(N.NodoDerecho);
+        }
+
+        /// <summary>
+        /// Metodo para insertar un nodo y autobalancear el arbol
+        /// </summary>
+        /// <param name="simbolo"></param>
+        /// <param name="nodo"></param>
+        /// <returns></returns>
+        public Nodo Insertar(Simbolo simbolo,Nodo nodo) {
+
+            // Find the position and insert the nodo
+            if (nodo == null)
+                return (new Nodo(simbolo, null, null));
+            if (String.CompareOrdinal(simbolo.Nombre, nodo.Simb.Nombre)<0)
+                nodo.NodoIzquierdo = Insertar(simbolo, nodo.NodoIzquierdo);
+            else if (string.CompareOrdinal(simbolo.Nombre, nodo.Simb.Nombre)>0)
+                nodo.NodoDerecho = Insertar(simbolo, nodo.NodoDerecho);
+            else
+                return nodo;
+
+            //Balanceo
+            nodo.Altura = 1 + max(Altura(nodo.NodoIzquierdo), Altura(nodo.NodoDerecho));
+            int balanceFactor = getFactorBalanceo(nodo);
+            if (balanceFactor > 1) {
+                if (String.CompareOrdinal(simbolo.Nombre, nodo.NodoIzquierdo.Simb.Nombre)<0) {
+                    return rotarDerecha(nodo);
+                } else if (String.CompareOrdinal(simbolo.Nombre, nodo.NodoIzquierdo.Simb.Nombre)>0) {
+                    nodo.NodoIzquierdo = rotarIzquierda(nodo.NodoIzquierdo);
+                    return rotarDerecha(nodo);
                 }
             }
-            
-            n.Altura = Math.Max(n.NodoIzquierdo.Altura, n.NodoDerecho.Altura) + 1; 
-            return n;
+            if (balanceFactor < -1) {
+                if (String.CompareOrdinal(simbolo.Nombre, nodo.NodoDerecho.Simb.Nombre)>0) {
+                    return rotarIzquierda(nodo);
+                } else if (String.CompareOrdinal(simbolo.Nombre, nodo.NodoDerecho.Simb.Nombre)<0) {
+                    nodo.NodoDerecho = rotarDerecha(nodo.NodoDerecho);
+                    return rotarIzquierda(nodo);
+                }
+            }
+            return nodo;
         }
         
         //METODOS PARA MOSTRAR LOS DATOS
@@ -126,125 +180,6 @@ namespace AplicacionDeArbolesAVL
                     return null;
             }
             return actual;
-        }
-        
-        /// <summary>
-        /// Borra un nodo del arbol
-        /// </summary>
-        /// <param name="llave">nombre del simbolo del nodo a borrar</param>
-        /// <returns>false si no se borro</returns>
-        public bool Borrar(string llave)
-        {
-            Nodo actual = raiz;
-            Nodo padre = raiz;
-            bool esNodoIzquierdoHijo = true;
-            
-            while (!actual.Simb.Nombre.Equals(llave))
-            {
-                padre = actual;
-                if (String.CompareOrdinal(llave,actual.Simb.Nombre)<0)
-                {
-                    esNodoIzquierdoHijo = true;
-                    actual = actual.NodoIzquierdo;
-                }
-                else 
-                {
-                    esNodoIzquierdoHijo = false;
-                    actual = actual.NodoDerecho;
-                }
-                if (actual == null)
-                    return false;
-            }
-
-            if ((actual.NodoIzquierdo == null) && (actual.NodoDerecho == null))
-            {
-                if (actual == raiz)
-                    raiz = null;
-                else if (esNodoIzquierdoHijo)
-                    padre.NodoIzquierdo = null;
-                else
-                    padre.NodoDerecho = null;
-            }
-            else if (actual.NodoDerecho == null)
-            {
-                if (actual == raiz)
-                    raiz = actual.NodoIzquierdo;
-                else if (esNodoIzquierdoHijo)
-                    padre.NodoIzquierdo = actual.NodoIzquierdo;
-                else
-                    padre.NodoDerecho = actual.NodoDerecho;
-            }
-            else if (actual.NodoIzquierdo == null)
-            {
-                if (actual == raiz)
-                    raiz = actual.NodoDerecho;
-                else if (esNodoIzquierdoHijo)
-                    padre.NodoIzquierdo = padre.NodoDerecho;
-                else
-                    padre.NodoDerecho = actual.NodoDerecho;
-            }
-            else
-            {
-                Nodo heredero = GetHeredero(actual);
-                if (actual == raiz)
-                    raiz = heredero;
-                else if (esNodoIzquierdoHijo)
-                    padre.NodoIzquierdo = heredero;
-                else
-                    padre.NodoDerecho = heredero;
-                heredero.NodoIzquierdo = actual.NodoIzquierdo;
-            }
-            return true;
-        }
-        
-        /// <summary>
-        /// Método para encontrar el heredero de un nodo a borrar
-        /// </summary>
-        /// <param name="borrarNodo">nodo a borrar</param>
-        /// <returns>nodo heredero</returns>
-        public Nodo GetHeredero(Nodo borrarNodo) {
-            Nodo herederoPadre = borrarNodo;
-            Nodo heredero = borrarNodo;
-            Nodo actual = borrarNodo.NodoDerecho;
-            while (!(actual == null)) {
-                herederoPadre = actual;
-                heredero = actual;
-                actual = actual.NodoIzquierdo;
-            }
-            if (!(heredero == borrarNodo.NodoDerecho)) {
-                herederoPadre.NodoIzquierdo = heredero.NodoDerecho;
-                heredero.NodoDerecho = borrarNodo.NodoDerecho;
-            }
-            return heredero;
-        }
-
-        //METODOS DE BALANCEO
-        
-        private Nodo RotarConNodoIzquierdoHijo(Nodo n2) {
-            Nodo n1 = n2.NodoIzquierdo;
-            n2.NodoIzquierdo = n1.NodoDerecho;
-            n1.NodoDerecho = n2;
-            n2.Altura = Math.Max(n2.NodoIzquierdo.Altura, n2.NodoDerecho.Altura) + 1;
-            n1.Altura = Math.Max(n1.NodoIzquierdo.Altura, n2.Altura) + 1;
-            return n1;
-        }
-        private Nodo RotarConNodoDerechoHijo(Nodo n1) {
-            Nodo n2 = n1.NodoDerecho;
-            n1.NodoDerecho = n2.NodoIzquierdo;
-            n2.NodoIzquierdo = n1;
-            n1.Altura = Math.Max(n1.NodoIzquierdo.Altura, n1.NodoDerecho.Altura) + 1;
-            n2.Altura = Math.Max(n2.NodoDerecho.Altura, n1.Altura) + 1;
-            return n2;
-        }
-        
-        private Nodo DobleConNodoIzquierdoHijo(Nodo n3) {
-            n3.NodoIzquierdo = RotarConNodoDerechoHijo(n3.NodoIzquierdo);
-            return RotarConNodoIzquierdoHijo(n3);
-        }
-        
-        private Nodo DobleConNodoDerechoHijo(Nodo n1) {
-            n1.NodoDerecho = RotarConNodoIzquierdoHijo(n1.NodoDerecho);
-            return RotarConNodoDerechoHijo(n1);
         }
     }
 }
