@@ -16,6 +16,13 @@ namespace AplicacionDeArbolesAVL
             nodoDerecho = null;
         }
 
+        public Nodo(Simbolo simb, Nodo nodoIzquierdo, Nodo nodoDerecho)
+        {
+            this.simb = simb;
+            this.nodoIzquierdo = nodoIzquierdo;
+            this.nodoDerecho = nodoDerecho;
+        }
+
         public Simbolo Simb
         {
             get => simb;
