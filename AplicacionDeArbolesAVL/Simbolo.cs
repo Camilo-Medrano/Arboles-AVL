@@ -9,6 +9,10 @@ namespace AplicacionDeArbolesAVL
 
         public Simbolo()
         {
+            nombre = null;
+            tipo = null;
+            ambito = null;
+            otrosDatos = null;
         }
 
         public string Nombre
@@ -33,6 +37,11 @@ namespace AplicacionDeArbolesAVL
         {
             get => otrosDatos;
             set => otrosDatos = value;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Nombre: {0}, Tipo: {1}, Ambito: {2}, Otros Datos: {3}", nombre, tipo, ambito, otrosDatos);
         }
     }
 }
