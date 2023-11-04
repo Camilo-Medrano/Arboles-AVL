@@ -181,5 +181,21 @@ namespace AplicacionDeArbolesAVL
             }
             return actual;
         }
+        
+        public void printTree(Nodo currPtr, String indent, bool last) {
+            if (currPtr != null) {
+                Console.Write(indent);
+                if (last) {
+                    Console.Write("R----");
+                    indent += "   ";
+                } else {
+                    Console.Write("L----");
+                    indent += "|  ";
+                }
+                Console.WriteLine(currPtr.Simb.ToString());
+                printTree(currPtr.NodoIzquierdo, indent, false);
+                printTree(currPtr.NodoDerecho, indent, true);
+            }
+        }
     }
 }

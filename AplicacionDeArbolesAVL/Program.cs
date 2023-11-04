@@ -25,10 +25,27 @@ namespace AplicacionDeArbolesAVL
             lineaDos.Tipo = "float";
             lineaDos.OtrosDatos = "11.5";
             
+            Simbolo lineaTres = new Simbolo();
+            lineaTres.Nombre = "durabilidadMeses";
+            lineaTres.Ambito = "private";
+            lineaTres.Tipo = "int";
+            lineaTres.OtrosDatos = "13";
+            
+            Simbolo lineaCuatro = new Simbolo();
+            lineaCuatro.Nombre = "usados";
+            lineaCuatro.Ambito = "private";
+            lineaCuatro.Tipo = "bool";
+            lineaCuatro.OtrosDatos = "true";
+            
             arbol.Raiz = arbol.Insertar(lineaCero, arbol.Raiz);
             arbol.Raiz = arbol.Insertar(lineaUno, arbol.Raiz);
             arbol.Raiz = arbol.Insertar(lineaDos, arbol.Raiz);
+            arbol.Raiz = arbol.Insertar(lineaTres, arbol.Raiz);
+            arbol.Raiz = arbol.Insertar(lineaCuatro, arbol.Raiz);
             arbol.EnOrden(arbol.Raiz);
+            Console.WriteLine("\n\n"+ arbol.Raiz.Simb.ToString());
+            Console.WriteLine("\nImpresión del arbol AVL\n\n");
+            arbol.printTree(arbol.Raiz,"",true);
         }
     }
 }
