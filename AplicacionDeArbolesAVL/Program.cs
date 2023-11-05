@@ -48,6 +48,7 @@ namespace AplicacionDeArbolesAVL
             simbolos.PrintTree(simbolos.Raiz, "", true);
 
 
+            Console.WriteLine("\n");
             foreach (Match match in matches)
             {
                 Console.WriteLine($"Variable encontrada: {match.Groups[2].Value}, Tipo: {match.Groups[1].Value}, Valor: {match.Groups[3].Value}");
