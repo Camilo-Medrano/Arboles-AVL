@@ -174,7 +174,7 @@ namespace AplicacionDeArbolesAVL
         /// <param name="currPtr">Nodo actual</param>
         /// <param name="indent">Indentación a imprimir</param>
         /// <param name="last">Originalmente true</param>
-        public void printTree(Nodo currPtr, String indent, bool last) {
+        public void PrintTree(Nodo currPtr, String indent, bool last) {
             if (currPtr != null) {
                 Console.Write(indent);
                 if (last) {
@@ -185,8 +185,8 @@ namespace AplicacionDeArbolesAVL
                     indent += "|  ";
                 }
                 Console.WriteLine(currPtr.Simb.ToString());
-                printTree(currPtr.NodoIzquierdo, indent, false);
-                printTree(currPtr.NodoDerecho, indent, true);
+                PrintTree(currPtr.NodoIzquierdo, indent, false);
+                PrintTree(currPtr.NodoDerecho, indent, true);
             }
         }
         

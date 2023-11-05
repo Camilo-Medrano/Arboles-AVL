@@ -45,7 +45,7 @@ namespace AplicacionDeArbolesAVL
 
             MatchCollection matches = Regex.Matches(codigoCSharp, pattern);
 
-            simbolos.printTree(simbolos.Raiz, "", true);
+            simbolos.PrintTree(simbolos.Raiz, "", true);
 
 
             foreach (Match match in matches)
