@@ -96,7 +96,7 @@ namespace AplicacionDeArbolesAVL
         /// <returns></returns>
         public Nodo Insertar(Simbolo simbolo,Nodo nodo) {
 
-            // Find the position and insert the nodo
+            // Encontar la posición e insertar nodo
             if (nodo == null)
                 return (new Nodo(simbolo, null, null));
             if (String.CompareOrdinal(simbolo.Nombre, nodo.Simb.Nombre)<0)
