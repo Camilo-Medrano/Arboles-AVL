@@ -6,25 +6,53 @@ namespace AplicacionDeArbolesAVL
     {
         private Nodo raiz;
 
+        /// <summary>
+        /// Metodos set y get del raiz
+        /// </summary>
         public Nodo Raiz
         {
             get => raiz;
             set => raiz = value;
         }
 
+        /// <summary>
+        /// Constructor sin parámetros
+        /// </summary>
         public ArbolDeSimbolos()
         {
             raiz = null;
         }
         
+        /// <summary>
+        /// Verificación de que la altura es válida
+        /// </summary>
+        /// <param name="N">Nodo a encontrar altura</param>
+        /// <returns></returns>
         int Altura(Nodo N) {
             if (N == null)
                 return 0;
             return N.Altura;
         }
         
+        /// <summary>
+        /// Método para encontrar el máximo entre dos números
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         int max(int a, int b) {
             return (a > b) ? a : b;
+        }
+        
+        /// <summary>
+        /// Conversión de null a boolean
+        /// </summary>
+        /// <param name="nombre">string a buscar</param>
+        /// <returns>true si esta encontrado</returns>
+        public bool VerificarPresenciaSimbolo(string nombre)
+        {
+            Nodo nodoEncontrado = Encontrar(nombre);
+            return nodoEncontrado != null;
         }
 
         //METODOS DE BALANCEO
@@ -140,6 +168,54 @@ namespace AplicacionDeArbolesAVL
             }
         }
         
+        /// <summary>
+        /// Impresión del árbol indentando.
+        /// </summary>
+        /// <param name="currPtr">Nodo actual</param>
+        /// <param name="indent">Indentación a imprimir</param>
+        /// <param name="last">Originalmente true</param>
+        public void printTree(Nodo currPtr, String indent, bool last) {
+            if (currPtr != null) {
+                Console.Write(indent);
+                if (last) {
+                    Console.Write("R----");
+                    indent += "   ";
+                } else {
+                    Console.Write("L----");
+                    indent += "|  ";
+                }
+                Console.WriteLine(currPtr.Simb.ToString());
+                printTree(currPtr.NodoIzquierdo, indent, false);
+                printTree(currPtr.NodoDerecho, indent, true);
+            }
+        }
+        
+        /// <summary>
+        /// Segundo método de impresión. Errores
+        /// </summary>
+        /// <param name="subArbol">Nodo inicial</param>
+        /// <param name="indentacion">Valor 0</param>
+        /// <param name="identificador"></param>
+        public void ImprimirSubArbol(Nodo subArbol, int indentacion, string identificador)
+        {
+            if (subArbol != null)
+            {
+                Console.WriteLine("\n");
+                for (int i = 0; i < indentacion; i++)
+                {
+                    Console.Write("    "); // 4 espacios por nivel de indentación
+                }
+                subArbol.MostrarNodo(identificador);
+                //Console.WriteLine(subArbol.Simb.Nombre); // Imprime el nombre del nodo
+
+                // Imprimir subárbol izquierdo con una mayor indentación
+                ImprimirSubArbol(subArbol.NodoIzquierdo, indentacion + 1, "I");
+
+                // Imprimir subárbol derecho con la misma indentación
+                ImprimirSubArbol(subArbol.NodoDerecho, indentacion + 1, "D");
+            }
+        }
+        
         //METODOS DE BUSQUEDA
         
         /// <summary>
@@ -180,22 +256,6 @@ namespace AplicacionDeArbolesAVL
                     return null;
             }
             return actual;
-        }
-        
-        public void printTree(Nodo currPtr, String indent, bool last) {
-            if (currPtr != null) {
-                Console.Write(indent);
-                if (last) {
-                    Console.Write("R----");
-                    indent += "   ";
-                } else {
-                    Console.Write("L----");
-                    indent += "|  ";
-                }
-                Console.WriteLine(currPtr.Simb.ToString());
-                printTree(currPtr.NodoIzquierdo, indent, false);
-                printTree(currPtr.NodoDerecho, indent, true);
-            }
         }
     }
 }
