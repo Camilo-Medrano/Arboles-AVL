@@ -9,11 +9,18 @@ namespace AplicacionDeArbolesAVL
         private string codigo;
         private ArbolDeSimbolos arbolDeSimbolos = new ArbolDeSimbolos();
 
+        /// <summary>
+        /// Constructor con un parámetro
+        /// </summary>
+        /// <param name="codigo">String con el código del main</param>
         public AnalizadorSemantico(string codigo)
         {
             this.codigo = codigo;
         }
 
+        /// <summary>
+        /// Analizador del código mediante expresiones regulares
+        /// </summary>
         public void AnalizarCodigo()
         {
             string pattern = @"\b(\w+)\s+(\w+)\s*=\s*([^;]+);"; // Expresión regular para identificar declaraciones de variables
@@ -37,6 +44,10 @@ namespace AplicacionDeArbolesAVL
                 }
             }
         }
+        
+        /// <summary>
+        /// Metodo get para ArbolDeSimbolos
+        /// </summary>
         public ArbolDeSimbolos ArbolDeSimbolos
         {
             get => arbolDeSimbolos;
