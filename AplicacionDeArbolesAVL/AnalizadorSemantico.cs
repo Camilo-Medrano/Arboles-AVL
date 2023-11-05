@@ -36,10 +36,17 @@ namespace AplicacionDeArbolesAVL
                     string ambito = "main"; //por propósitos de simplificación
                     string otrosDatos = "=" + match.Groups[3].Value;
                     Simbolo nuevoSimbolo = new Simbolo(nombre, tipo, ambito, otrosDatos);
-
-                    if (!arbolDeSimbolos.VerificarPresenciaSimbolo(nuevoSimbolo.Nombre))
+                    
+                    if (arbolDeSimbolos.Raiz == null)
                     {
                         arbolDeSimbolos.Raiz = arbolDeSimbolos.Insertar(nuevoSimbolo, arbolDeSimbolos.Raiz);
+                    }
+                    else
+                    {
+                        if (!arbolDeSimbolos.VerificarPresenciaSimbolo(nuevoSimbolo.Nombre))
+                        {
+                            arbolDeSimbolos.Raiz = arbolDeSimbolos.Insertar(nuevoSimbolo, arbolDeSimbolos.Raiz);
+                        }
                     }
                 }
             }
