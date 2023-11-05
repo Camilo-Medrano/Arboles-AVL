@@ -7,6 +7,9 @@ namespace AplicacionDeArbolesAVL
         private string ambito;
         private string otrosDatos;
 
+        /// <summary>
+        /// Constructor sin parámetros
+        /// </summary>
         public Simbolo()
         {
             nombre = null;
@@ -15,6 +18,13 @@ namespace AplicacionDeArbolesAVL
             otrosDatos = null;
         }
 
+        /// <summary>
+        /// Constructor con parámetros
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <param name="tipo"></param>
+        /// <param name="ambito"></param>
+        /// <param name="otrosDatos"></param>
         public Simbolo(string nombre, string tipo, string ambito, string otrosDatos)
         {
             this.nombre = nombre;
@@ -23,6 +33,8 @@ namespace AplicacionDeArbolesAVL
             this.otrosDatos = otrosDatos;
         }
 
+        // METODOS SET Y GET
+        
         public string Nombre
         {
             get => nombre;
@@ -47,6 +59,10 @@ namespace AplicacionDeArbolesAVL
             set => otrosDatos = value;
         }
 
+        /// <summary>
+        /// Método ToString
+        /// </summary>
+        /// <returns>string con todos los datos de simbolo</returns>
         public override string ToString()
         {
             return string.Format("Nombre: {0}, Tipo: {1}, Ambito: {2}, Otros Datos: {3}", nombre, tipo, ambito, otrosDatos);
