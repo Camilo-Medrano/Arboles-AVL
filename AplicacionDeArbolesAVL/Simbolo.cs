@@ -15,6 +15,14 @@ namespace AplicacionDeArbolesAVL
             otrosDatos = null;
         }
 
+        public Simbolo(string nombre, string tipo, string ambito, string otrosDatos)
+        {
+            this.nombre = nombre;
+            this.tipo = tipo;
+            this.ambito = ambito;
+            this.otrosDatos = otrosDatos;
+        }
+
         public string Nombre
         {
             get => nombre;
