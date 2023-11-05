@@ -9,6 +9,9 @@ namespace AplicacionDeArbolesAVL
         private Nodo nodoDerecho;
         private int altura;
 
+        /// <summary>
+        /// Constructor sin parámetros
+        /// </summary>
         public Nodo()
         {
             simb = null;
@@ -16,7 +19,13 @@ namespace AplicacionDeArbolesAVL
             nodoDerecho = null;
             altura = 0;
         }
-
+        
+        /// <summary>
+        /// Constructor con parámetros
+        /// </summary>
+        /// <param name="simb">Simbolo a ingresar</param>
+        /// <param name="nodoIzquierdo">Nodo izquierdo</param>
+        /// <param name="nodoDerecho">Nodo derecho</param>
         public Nodo(Simbolo simb, Nodo nodoIzquierdo, Nodo nodoDerecho)
         {
             this.simb = simb;
@@ -24,6 +33,8 @@ namespace AplicacionDeArbolesAVL
             this.nodoDerecho = nodoDerecho;
         }
 
+        //METODOS SET Y GET DE LOS ATRIBUTOS
+        
         public Simbolo Simb
         {
             get => simb;
@@ -48,6 +59,9 @@ namespace AplicacionDeArbolesAVL
             set => altura = value;
         }
 
+        /// <summary>
+        /// Muestra en un string lo que contiene el simbolo del nodo
+        /// </summary>
         public void MostrarNodo()
         {
             Console.Write("\n"+simb.ToString()+" ");
