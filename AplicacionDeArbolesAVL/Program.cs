@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+
 
 namespace AplicacionDeArbolesAVL
 {
@@ -6,46 +8,52 @@ namespace AplicacionDeArbolesAVL
     {
         public static void Main(string[] args)
         {
-            ArbolDeSimbolos arbol = new ArbolDeSimbolos();
-            Simbolo lineaCero = new Simbolo();
-            lineaCero.Nombre = "zapato";
-            lineaCero.Ambito = "private";
-            lineaCero.Tipo = "string";
-            lineaCero.OtrosDatos = "vans";
+            string codigoCSharp = @"
+	            int numero = 3;
+	            string saludo = ""Hola, querido usuario"";
+	            string nombre = ""Camilo Perez"";
+	            string adjetivo = ""honorable"";
+	            string siguiente = ""estimado usuario"";
+	            string descripcion = ""humilde persona"";
+	            string motivo = ""respuesta formal"";
+	            double valor2 = 4.5;
+	
+	            // Ejemplo de operación aritmética válida
+	            double resultado = numero + valor2;
+	
+	            // Actualización de la variable
+	            valor2 = 3;
+	            Console.WriteLine(valor2);
+	
+	            // Concatenación de cadenas de texto
+	            string saludoFinal = saludo + "" Rodrigo. Le damos la bienvenida a nuestro sistema."";
+	            Console.WriteLine(saludoFinal);
+            ";
 
-            Simbolo lineaUno = new Simbolo();
-            lineaUno.Nombre = "precio";
-            lineaUno.Ambito = "private";
-            lineaUno.Tipo = "float";
-            lineaUno.OtrosDatos = "105.7";
-            
-            Simbolo lineaDos = new Simbolo();
-            lineaDos.Nombre = "talla";
-            lineaDos.Ambito = "private";
-            lineaDos.Tipo = "float";
-            lineaDos.OtrosDatos = "11.5";
-            
-            Simbolo lineaTres = new Simbolo();
-            lineaTres.Nombre = "durabilidadMeses";
-            lineaTres.Ambito = "private";
-            lineaTres.Tipo = "int";
-            lineaTres.OtrosDatos = "13";
-            
-            Simbolo lineaCuatro = new Simbolo();
-            lineaCuatro.Nombre = "usados";
-            lineaCuatro.Ambito = "private";
-            lineaCuatro.Tipo = "bool";
-            lineaCuatro.OtrosDatos = "true";
-            
-            arbol.Raiz = arbol.Insertar(lineaCero, arbol.Raiz);
-            arbol.Raiz = arbol.Insertar(lineaUno, arbol.Raiz);
-            arbol.Raiz = arbol.Insertar(lineaDos, arbol.Raiz);
-            arbol.Raiz = arbol.Insertar(lineaTres, arbol.Raiz);
-            arbol.Raiz = arbol.Insertar(lineaCuatro, arbol.Raiz);
-            arbol.EnOrden(arbol.Raiz);
-            Console.WriteLine("\n\n"+ arbol.Raiz.Simb.ToString());
-            Console.WriteLine("\nImpresión del arbol AVL\n\n");
-            arbol.printTree(arbol.Raiz,"",true);
+            AnalizadorSemantico analisisSemantico = new AnalizadorSemantico(codigoCSharp);
+            analisisSemantico.AnalizarCodigo();
+            ArbolDeSimbolos simbolos = analisisSemantico.ArbolDeSimbolos;
+
+            Console.WriteLine("Código de main:");
+            Console.WriteLine(codigoCSharp);
+            Console.WriteLine();
+            simbolos.ImprimirSubArbol(simbolos.Raiz,0,"R");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            string pattern = @"\b(\w+)\s+(\w+)\s*=\s*([^;]+);";
+
+            MatchCollection matches = Regex.Matches(codigoCSharp, pattern);
+
+            simbolos.printTree(simbolos.Raiz, "", true);
+
+
+            foreach (Match match in matches)
+            {
+                Console.WriteLine($"Variable encontrada: {match.Groups[2].Value}, Tipo: {match.Groups[1].Value}, Valor: {match.Groups[3].Value}");
+            }
+
+            Console.Read();
         }
     }
 }
