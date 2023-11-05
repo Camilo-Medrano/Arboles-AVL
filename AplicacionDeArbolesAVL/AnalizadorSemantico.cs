@@ -30,9 +30,9 @@ namespace AplicacionDeArbolesAVL
                     string otrosDatos = "=" + match.Groups[3].Value;
                     Simbolo nuevoSimbolo = new Simbolo(nombre, tipo, ambito, otrosDatos);
 
-                    if (!VerificarPresenciaSimbolo(nuevoSimbolo.Nombre))
+                    if (!arbolDeSimbolos.VerificarPresenciaSimbolo(nuevoSimbolo.Nombre))
                     {
-                        arbolDeSimbolos.Insertar(nuevoSimbolo);
+                        arbolDeSimbolos.Raiz = arbolDeSimbolos.Insertar(nuevoSimbolo, arbolDeSimbolos.Raiz);
                     }
                 }
             }
@@ -40,18 +40,6 @@ namespace AplicacionDeArbolesAVL
         public ArbolDeSimbolos ArbolDeSimbolos
         {
             get => arbolDeSimbolos;
-        }
-
-
-        private bool VerificarPresenciaSimbolo(string nombre)
-        {
-            Nodo nodoEncontrado = arbolDeSimbolos.Encontrar(nombre);
-            return nodoEncontrado != null;
-        }
-
-        public bool VerificarExpresionRegular(string extracto)
-        {
-            return true;
         }
 
     }
