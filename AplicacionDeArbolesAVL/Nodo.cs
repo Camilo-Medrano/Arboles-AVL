@@ -66,5 +66,14 @@ namespace AplicacionDeArbolesAVL
         {
             Console.Write("\n"+simb.ToString()+" ");
         }
+        
+        /// <summary>
+        /// MostrarNodo con un string
+        /// </summary>
+        /// <param name="identificador"></param>
+        public void MostrarNodo(string identificador)
+        {
+            Console.Write(String.Format("[{0}] ({1}) ", identificador, simb.Nombre) + simb.ToString()+" ");
+        }
     }
 }
